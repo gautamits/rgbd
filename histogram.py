@@ -36,5 +36,12 @@ def histogram2(image,horizontal_slices,vertical_slices):
 		n=h/vertical_slices
 		h=vertical_slices*(n+1)
 	image=cv2.resize(image,(w,h))
-	print image.shape
-
+	#print image.shape
+	ret=[]
+	kernel_height=image.shape[0]/vertical_slices
+	kernel_width=image.shape[1]/horizontal_slices
+	for i in range(0,image.shape[1],kernel_width):
+		for j in range(0,image.shape[0],kernel_height):
+			sliced=image[i:i+kernel_width,j:j+kernel_height]
+			ret.append(sliced)
+	return ret

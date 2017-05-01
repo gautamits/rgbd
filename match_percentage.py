@@ -10,7 +10,7 @@ from matcher import euclidean_matcher
 from matcher import svm_matcher
 from matcher import DecisionTreeMatcher
 import matplotlib.pyplot as plt
-
+import matplotlib
 
 
 data=np.load("database/data.npy")
@@ -21,15 +21,21 @@ f=plt.figure()
 ax=f.add_subplot(111)
 for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] +
              ax.get_xticklabels() + ax.get_yticklabels()):
-    item.set_fontsize(14)
+    item.set_fontsize(5)
+font = {'family' : 'normal',
+        'weight' : 'bold',
+        'size'   : 8}
+
+plt.rc('font', **font)
 path=easygui.diropenbox("select the directory you want to check your database on")
 for func in [euclidean_matcher,svm_matcher,DecisionTreeMatcher]:
-	success=0
-	fail=0
-	total=0
 	percentages=[]
 	people=[]
+	images=[]
 	for persons in os.listdir(path):
+		success=0
+		fail=0
+		total=0
 		goal=persons
 		people.append(int(persons))
 		color_path=path+'/'+persons+'/RGB'
@@ -65,11 +71,12 @@ for func in [euclidean_matcher,svm_matcher,DecisionTreeMatcher]:
 
 
 			#print "checking ",color_image,success,fail,total
+			images.append(total)
 		print str(func).split()[1]," after ",persons," percentage is ",float(success)*100/total
 		percentages.append(float(success)*100/total)
-	images,p=np.histogram(labels,range(int(min(labels)),int(max(labels))+2))
-	p,images=zip(*sorted(zip(p,images)))
-	people,percentages=zip(*sorted(zip(people,percentages)))
+	#images,p=np.histogram(labels,range(int(min(labels)),int(max(labels))+2))
+	#p,images=zip(*sorted(zip(p,images)))
+	people,percentages,images=zip(*sorted(zip(people,percentages,images)))
 	print people
 	print images
 	print percentages
