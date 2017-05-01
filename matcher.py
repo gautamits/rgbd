@@ -5,12 +5,17 @@ import scipy
 from sklearn import svm
 from sklearn.externals import joblib
 from collections import Counter
+from sklearn import tree
+
+
 data=np.load("database/data.npy")
 labels=np.load("database/labels.npy")
 locations=np.load("database/locations.npy")
 try:
 	svm_model=svm.SVC(kernel='linear', C=1, gamma=1) 
 	svm_model=joblib.load("database/svm.pkl")
+	clf = tree.DecisionTreeClassifier()
+	decisionTree_model=joblib.load("database/DecisionTree.pkl")
 except:
 	svm_model=svm.SVC(kernel='linear', C=1, gamma=1) 
 	svm_model.fit(data, labels)
@@ -35,7 +40,7 @@ def euclidean_matcher(feature):
 		temp=temp[:10]
 	label=Most_Common(temp)
 	return label
-def svm(feature):
+def svm_matcher(feature):
 	
 	"""model = svm.svc(kernel='linear', c=1, gamma=1) 
 	# there is various option associated with it, like changing kernel, gamma and C value. Will discuss more # about it in next section.Train the model using the training sets and check score
@@ -44,4 +49,7 @@ def svm(feature):
 	#Predict Output
 	"""
 	predicted= svm_model.predict(feature)
+	return predicted
+def DecisionTreeMatcher(feature):
+	predicted=decisionTree_model.predict(feature)
 	return predicted

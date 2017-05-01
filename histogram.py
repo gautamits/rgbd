@@ -22,3 +22,19 @@ def histogram(image):
 	hist=hog.compute(image)
 	#print "histogram shape found by hog is ",hist.shape
 	return hist
+def histogram2(image,horizontal_slices,vertical_slices):
+	#shape function returns height first and then width
+	h,w=image.shape[:2]
+	#print image.shape
+	#print h_slices,w_slices
+	if w%horizontal_slices!=0:
+		#cannot be sliced into equal sizes
+		n=w/horizontal_slices
+		w=horizontal_slices*(n+1)
+	if h%vertical_slices!=0:
+		#cannot be sliced into equal sizes
+		n=h/vertical_slices
+		h=vertical_slices*(n+1)
+	image=cv2.resize(image,(w,h))
+	print image.shape
+
