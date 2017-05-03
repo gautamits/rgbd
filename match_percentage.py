@@ -7,10 +7,12 @@ from rgbd import rgbd
 import scipy
 import traceback
 from matcher import euclidean_matcher
-from matcher import svm_matcher
+from matcher import svm_matcher_linear
+from matcher import svm_matcher_poly
+from matcher import svm_matcher_rbf
+from matcher import rdf_matcher
 from matcher import DecisionTreeMatcher
 import matplotlib.pyplot as plt
-import matplotlib
 
 
 data=np.load("database/data.npy")
@@ -28,14 +30,26 @@ font = {'family' : 'normal',
 
 plt.rc('font', **font)
 path=easygui.diropenbox("select the directory you want to check your database on")
-for func in [euclidean_matcher,svm_matcher,DecisionTreeMatcher]:
+#for func in [euclidean_matcher,svm_matcher,DecisionTreeMatcher]:
+for func in [svm_matcher_linear,svm_matcher_poly,svm_matcher_rbf]:
 	percentages=[]
 	people=[]
 	images=[]
-	for persons in os.listdir(path):
-		success=0
-		fail=0
-		total=0
+	success=0
+	fail=0
+	total=0
+	persons=os.listdir(path)
+	try:
+		persons=map(int,persons)
+	except Exception as E:
+		print E
+	people=sorted(persons)
+	people=map(str,people)
+	for persons in people:
+		#print "checking ",persons
+		success_temp=0
+		fail_temp=0
+		total_temp=0
 		goal=persons
 		people.append(int(persons))
 		color_path=path+'/'+persons+'/RGB'
@@ -44,7 +58,7 @@ for func in [euclidean_matcher,svm_matcher,DecisionTreeMatcher]:
 			rgb=cv2.imread(color_image)
 			rgb=cv2.resize(rgb,(140,140))
 			depth_path=color_image.split("/")[::-1]
-			
+
 			depth_path[1]="Depth"
 			depth_path=depth_path[::-1]
 			depth_path="/".join(depth_path)
@@ -64,23 +78,27 @@ for func in [euclidean_matcher,svm_matcher,DecisionTreeMatcher]:
 			#label=DecisionTreeMatcher(feature)
 			person=naming[label]
 			if person==persons:
-				success+=1
+				success_temp+=1
 			else:
-				fail+=1
-			total+=1
+				fail_temp+=1
+			total_temp+=1
 
 
 			#print "checking ",color_image,success,fail,total
-			images.append(total)
-		print str(func).split()[1]," after ",persons," percentage is ",float(success)*100/total
+
+		success=success+success_temp
+		fail+=fail_temp
+		total+=total_temp
+		images.append(total)
+		print str(func).split()[1],persons,float(success_temp)*100/total_temp,float(success)*100/total
 		percentages.append(float(success)*100/total)
 	#images,p=np.histogram(labels,range(int(min(labels)),int(max(labels))+2))
 	#p,images=zip(*sorted(zip(p,images)))
 	people,percentages,images=zip(*sorted(zip(people,percentages,images)))
-	print people
-	print images
-	print percentages
-	
+	#print people
+	#print images
+	#print percentages
+
 	ax.plot(people,percentages,label=str(func).split()[1])
 ax.plot(people,images,label='images')
 ax.legend()
@@ -89,8 +107,3 @@ ax.set_ylabel('matches with number of images')
 ax.set_title('change in % matches with variation in number of images')
 f.show()
 f.savefig("folder1.jpg")
-
-
-
-
-

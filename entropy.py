@@ -27,7 +27,8 @@ def entro(image):
     #normalisation
     peak=max(entr_img.flatten())
     #print entropy
-    entr_img=(255/peak)*entr_img
+    if peak!=0:
+    	entr_img=(255/peak)*entr_img
     return entr_img
 if __name__=="__main__":
     i=cv2.imread("images/amit1.jpg")

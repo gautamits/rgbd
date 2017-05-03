@@ -6,21 +6,25 @@ from sklearn import svm
 from sklearn.externals import joblib
 from collections import Counter
 from sklearn import tree
+import sklearn
+#from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier
+
 
 
 data=np.load("database/data.npy")
 labels=np.load("database/labels.npy")
 locations=np.load("database/locations.npy")
 try:
-	svm_model=svm.SVC(kernel='linear', C=1, gamma=1) 
-	svm_model=joblib.load("database/svm.pkl")
-	clf = tree.DecisionTreeClassifier()
+	#svm_model=svm.SVC(kernel='linear', C=1, gamma=1)
+	svm_model_linear=joblib.load("database/svm_linear.pkl")
+	svm_model_poly=joblib.load("database/svm_poly.pkl")
+	svm_model_rbf=joblib.load("database/svm_rbf.pkl")
+	#clf = tree.DecisionTreeClassifier()
 	decisionTree_model=joblib.load("database/DecisionTree.pkl")
-except:
-	svm_model=svm.SVC(kernel='linear', C=1, gamma=1) 
-	svm_model.fit(data, labels)
-	svm_model.score(data, labels)
-	joblib.dump(svm_model,"database/svm.pkl")
+	rdf_model=joblib.load("database/rdf.pkl")
+except Exception as E:
+	print E
 def Most_Common(lst):
     data = Counter(lst)
     return data.most_common(1)[0][0]
@@ -40,16 +44,49 @@ def euclidean_matcher(feature):
 		temp=temp[:10]
 	label=Most_Common(temp)
 	return label
-def svm_matcher(feature):
-	
-	"""model = svm.svc(kernel='linear', c=1, gamma=1) 
-	# there is various option associated with it, like changing kernel, gamma and C value. Will discuss more # about it in next section.Train the model using the training sets and check score
-	model.fit(data, labels)
-	model.score(data, labels)
-	#Predict Output
-	"""
-	predicted= svm_model.predict(feature)
+def svm_matcher_linear(feature):
+
+	predicted= svm_model_linear.predict(feature)
+	return predicted
+def svm_matcher_rbf(feature):
+
+	predicted= svm_model_rbf.predict(feature)
+	return predicted
+def svm_matcher_poly(feature):
+	predicted= svm_model_poly.predict(feature)
 	return predicted
 def DecisionTreeMatcher(feature):
 	predicted=decisionTree_model.predict(feature)
 	return predicted
+def rdf_matcher(feature):
+	predicted=rdf_model.predict(feature)
+	return predicted
+
+def RandomForestTrainer(data,labels):
+	forest = RandomForestClassifier(n_estimators=100, random_state=1)
+	#multi_target_forest = sklearn.multioutput.MultiOutputClassifier(forest, n_jobs=-1)
+	forest.fit(data, labels)
+	print "random forest classifier trained"
+	joblib.dump(forest,"database/rdf.pkl")
+
+def svm_trainer(data,labels):
+	svm_model_1=svm.SVC(kernel='linear', C=1, gamma=1)
+	svm_model_2=svm.SVC(kernel='poly', C=1, gamma=1)
+	svm_model_3=svm.SVC(kernel='rbf', C=1, gamma=1)
+
+	svm_model_1.fit(data, labels)
+	svm_model_1.score(data, labels)
+	joblib.dump(svm_model_1,"database/svm_linear.pkl")
+
+	svm_model_2.fit(data, labels)
+	svm_model_2.score(data, labels)
+	joblib.dump(svm_model_2,"database/svm_poly.pkl")
+
+	svm_model_3.fit(data, labels)
+	svm_model_3.score(data, labels)
+	joblib.dump(svm_model_3,"database/svm_rbf.pkl")
+
+def DecisionTreeTrainer(data,labels):
+	clf = tree.DecisionTreeClassifier()
+	clf = clf.fit(data, labels)
+	joblib.dump(clf,"database/DecisionTree.pkl")
