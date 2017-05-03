@@ -35,14 +35,7 @@ labels=[]
 locations=[]
 data=[]
 k=0
-persons=os.listdir(path)
-try:
-	persons=map(int,persons)
-except Exception as E:
-	print E
-persons=sorted(persons)
-persons=map(str,persons)
-for folders in persons:  #loop over all the persons
+for folders in os.listdir(path):  #loop over all the persons
 	folder=path+'/'+folders
 	naming.append(folders)
 	depth_dir=folder+'/Depth'

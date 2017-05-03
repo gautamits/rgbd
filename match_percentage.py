@@ -30,23 +30,22 @@ font = {'family' : 'normal',
 
 plt.rc('font', **font)
 path=easygui.diropenbox("select the directory you want to check your database on")
-#for func in [euclidean_matcher,svm_matcher,DecisionTreeMatcher]:
-for func in [svm_matcher_linear,svm_matcher_poly,svm_matcher_rbf]:
+for func in [euclidean_matcher,svm_matcher_linear,DecisionTreeMatcher]:
 	percentages=[]
 	people=[]
 	images=[]
 	success=0
 	fail=0
 	total=0
-	persons=os.listdir(path)
+	paths=os.listdir(path)
 	try:
-		persons=map(int,persons)
+		paths=map(int,paths)
 	except Exception as E:
 		print E
-	people=sorted(persons)
-	people=map(str,people)
-	for persons in people:
-		#print "checking ",persons
+	paths=sorted(paths)
+	paths=map(str,paths)
+	for persons in paths:
+		#print "checking ",persons,str(func)
 		success_temp=0
 		fail_temp=0
 		total_temp=0
