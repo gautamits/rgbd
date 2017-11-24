@@ -4,6 +4,7 @@ from saliency import saliency
 from histogram import histogram
 from entropy import entro
 import matplotlib.pyplot as plt
+from ldgp import ldgp
 def rgbd( rgb , depth_map ):
 	#extract facial region using viola jones later
 
@@ -49,12 +50,18 @@ def rgbd( rgb , depth_map ):
 	#print "patch2 size is",patch2.shape
 	E1 = entro(patch1)
 	E2 = entro(patch2)
-	S = saliency(rgb)
+	#S = saliency(rgb)
 	E3 = entro(patch3)
 	E4 = entro(patch4)
+	#E1 = ldgp(patch1)
+	#E2 = ldgp(patch2)
+	S = saliency(rgb)
+	#E3 = ldgp(patch3)
+	#E4 = ldgp(patch4)
+	#E5=entro(S)
 	#return [E1,E2,E3,E4,S]
 	final_hog=[]
-	for i in [E1,E2,E3,E4,S]:
+	for i in [S,entro(rgb)]:                       #E1 is 14%,E2 is 4%, E3 is 15%,E4 is 3%,S is 71%,E1 is 29
 		i=np.array(i,np.uint8)
 		#final_hog=np.concatenate(final_hog,np.histogram(i,bins=255))
 		#final_hog=np.hstack((final_hog,histogram(i)))

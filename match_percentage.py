@@ -30,7 +30,7 @@ font = {'family' : 'normal',
 
 plt.rc('font', **font)
 path=easygui.diropenbox("select the directory you want to check your database on")
-for func in [euclidean_matcher,svm_matcher_linear,DecisionTreeMatcher]:
+for func in [svm_matcher_linear]:
 	percentages=[]
 	people=[]
 	images=[]
@@ -38,6 +38,7 @@ for func in [euclidean_matcher,svm_matcher_linear,DecisionTreeMatcher]:
 	fail=0
 	total=0
 	paths=os.listdir(path)
+	
 	try:
 		paths=map(int,paths)
 	except Exception as E:
@@ -46,6 +47,12 @@ for func in [euclidean_matcher,svm_matcher_linear,DecisionTreeMatcher]:
 	paths=map(str,paths)
 	for persons in paths:
 		#print "checking ",persons,str(func)
+		
+		data=[]
+		labels=[]
+		k=0
+		
+		
 		success_temp=0
 		fail_temp=0
 		total_temp=0
@@ -70,6 +77,8 @@ for func in [euclidean_matcher,svm_matcher_linear,DecisionTreeMatcher]:
 				"depth not read properly for ",color_path
 				continue
 			feature=rgbd(rgb,depth)
+			data.append(feature)
+			labels.append(k)
 			feature=feature.reshape((1,-1))
 			#print feature
 			#label=euclidean_matcher(feature)
@@ -88,9 +97,11 @@ for func in [euclidean_matcher,svm_matcher_linear,DecisionTreeMatcher]:
 		success=success+success_temp
 		fail+=fail_temp
 		total+=total_temp
-		images.append(total)
+		images.append(total_temp)
 		print str(func).split()[1],persons,float(success_temp)*100/total_temp,float(success)*100/total
 		percentages.append(float(success)*100/total)
+		k+=1
+	#print func.score(data,labels)
 	#images,p=np.histogram(labels,range(int(min(labels)),int(max(labels))+2))
 	#p,images=zip(*sorted(zip(p,images)))
 	people,percentages,images=zip(*sorted(zip(people,percentages,images)))
@@ -99,6 +110,7 @@ for func in [euclidean_matcher,svm_matcher_linear,DecisionTreeMatcher]:
 	#print percentages
 
 	ax.plot(people,percentages,label=str(func).split()[1])
+	
 ax.plot(people,images,label='images')
 ax.legend()
 ax.set_xlabel('peoples')

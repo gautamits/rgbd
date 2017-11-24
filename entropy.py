@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 from skimage.util import img_as_ubyte
-from skimage.filter.rank import entropy
+from skimage.filters.rank import entropy
 from skimage.morphology import disk
 
 

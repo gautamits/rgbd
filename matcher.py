@@ -63,13 +63,15 @@ def rdf_matcher(feature):
 	return predicted
 
 def RandomForestTrainer(data,labels):
+	print "training random forest"
 	forest = RandomForestClassifier(n_estimators=100, random_state=1)
 	#multi_target_forest = sklearn.multioutput.MultiOutputClassifier(forest, n_jobs=-1)
 	forest.fit(data, labels)
 	print "random forest classifier trained"
 	joblib.dump(forest,"database/rdf.pkl")
-
+	print "random forest trained"
 def svm_trainer(data,labels):
+	print "training svm classifiers"
 	svm_model_1=svm.SVC(kernel='linear', C=1, gamma=1)
 	svm_model_2=svm.SVC(kernel='poly', C=1, gamma=1)
 	svm_model_3=svm.SVC(kernel='rbf', C=1, gamma=1)
@@ -85,8 +87,10 @@ def svm_trainer(data,labels):
 	svm_model_3.fit(data, labels)
 	svm_model_3.score(data, labels)
 	joblib.dump(svm_model_3,"database/svm_rbf.pkl")
-
+	print "svm classifiers trained"
 def DecisionTreeTrainer(data,labels):
+	print "training decision tree"
 	clf = tree.DecisionTreeClassifier()
 	clf = clf.fit(data, labels)
+	print "decision tree trained"
 	joblib.dump(clf,"database/DecisionTree.pkl")
