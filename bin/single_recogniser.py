@@ -28,8 +28,8 @@ print depth_path
 depth=cv2.imread(depth_path)
 depth=cv2.resize(depth,(140,140))
 label=(rgbd(rgb,depth))
-naming=np.load("database/naming.npy")
-locations=np.load("database/locations.npy")
+naming=np.load("../database/naming.npy")
+locations=np.load("../database/locations.npy")
 
 print naming[label]
 #print labels[:10]

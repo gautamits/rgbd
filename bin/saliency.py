@@ -16,7 +16,7 @@ def saliency(img):
 # main
 if __name__ == '__main__':
     # read
-    img = cv2.imread('images/amit1.jpg')
+    img = cv2.imread('../images/amit1.jpg')
     # initialize
     imgsize = img.shape
     img_width  = imgsize[1]

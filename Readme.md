@@ -9,3 +9,5 @@ This script will ask for root of testing database and show the cumulative succes
 
 `rgbd.py`
 Contains function named **rgbd** which takes two arguments RGB image and depth map. Returns feature vector for that image
+<img vspace="20" src="images/entropy.png">
+<img src="images/saliency.png">

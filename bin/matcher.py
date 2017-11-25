@@ -12,17 +12,17 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 
-data=np.load("database/data.npy")
-labels=np.load("database/labels.npy")
-locations=np.load("database/locations.npy")
+data=np.load("../database/data.npy")
+labels=np.load("../database/labels.npy")
+locations=np.load("../database/locations.npy")
 try:
 	#svm_model=svm.SVC(kernel='linear', C=1, gamma=1)
-	svm_model_linear=joblib.load("database/svm_linear.pkl")
-	svm_model_poly=joblib.load("database/svm_poly.pkl")
-	svm_model_rbf=joblib.load("database/svm_rbf.pkl")
+	svm_model_linear=joblib.load("../database/svm_linear.pkl")
+	svm_model_poly=joblib.load("../database/svm_poly.pkl")
+	svm_model_rbf=joblib.load("../database/svm_rbf.pkl")
 	#clf = tree.DecisionTreeClassifier()
-	decisionTree_model=joblib.load("database/DecisionTree.pkl")
-	rdf_model=joblib.load("database/rdf.pkl")
+	decisionTree_model=joblib.load("../database/DecisionTree.pkl")
+	rdf_model=joblib.load("../database/rdf.pkl")
 except Exception as E:
 	print E
 def Most_Common(lst):
@@ -68,7 +68,7 @@ def RandomForestTrainer(data,labels):
 	#multi_target_forest = sklearn.multioutput.MultiOutputClassifier(forest, n_jobs=-1)
 	forest.fit(data, labels)
 	print "random forest classifier trained"
-	joblib.dump(forest,"database/rdf.pkl")
+	joblib.dump(forest,"../database/rdf.pkl")
 	print "random forest trained"
 def svm_trainer(data,labels):
 	print "training svm classifiers"
@@ -78,19 +78,19 @@ def svm_trainer(data,labels):
 
 	svm_model_1.fit(data, labels)
 	svm_model_1.score(data, labels)
-	joblib.dump(svm_model_1,"database/svm_linear.pkl")
+	joblib.dump(svm_model_1,"../database/svm_linear.pkl")
 
 	svm_model_2.fit(data, labels)
 	svm_model_2.score(data, labels)
-	joblib.dump(svm_model_2,"database/svm_poly.pkl")
+	joblib.dump(svm_model_2,"../database/svm_poly.pkl")
 
 	svm_model_3.fit(data, labels)
 	svm_model_3.score(data, labels)
-	joblib.dump(svm_model_3,"database/svm_rbf.pkl")
+	joblib.dump(svm_model_3,"../database/svm_rbf.pkl")
 	print "svm classifiers trained"
 def DecisionTreeTrainer(data,labels):
 	print "training decision tree"
 	clf = tree.DecisionTreeClassifier()
 	clf = clf.fit(data, labels)
 	print "decision tree trained"
-	joblib.dump(clf,"database/DecisionTree.pkl")
+	joblib.dump(clf,"../database/DecisionTree.pkl")

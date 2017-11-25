@@ -15,10 +15,10 @@ from matcher import DecisionTreeMatcher
 import matplotlib.pyplot as plt
 
 
-data=np.load("database/data.npy")
-naming=np.load("database/naming.npy")
-labels=np.load("database/labels.npy")
-locations=np.load("database/locations.npy")
+data=np.load("../database/data.npy")
+naming=np.load("../database/naming.npy")
+labels=np.load("../database/labels.npy")
+locations=np.load("../database/locations.npy")
 f=plt.figure()
 ax=f.add_subplot(111)
 for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] +
@@ -117,4 +117,4 @@ ax.set_xlabel('peoples')
 ax.set_ylabel('matches with number of images')
 ax.set_title('change in % matches with variation in number of images')
 f.show()
-f.savefig("folder1.jpg")
+f.savefig("../folder1.jpg")

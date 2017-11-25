@@ -74,26 +74,29 @@ def rgbd( rgb , depth_map ):
 	#return np.hstack(tuple([i for i in final_hog]))
 	return final_hog
 if __name__ == "__main__":
-	rgb=cv2.imread("images/color.jpg")
+	rgb=cv2.imread("../images/color.jpg")
 	if rgb is None:
 		print "color image is not read properly"
 		exit()
 
-	depth=cv2.imread("images/depth.jpg")
+	depth=cv2.imread("../images/depth.jpg")
 	if depth is None:
 		print "depth image is not read properly"
 		exit()
 	#print depth
 	final_answer=rgbd(rgb,depth)
 	k=1
+	#for i in final_answer:
+		#print np.histogram(i,bins=range(256))[0]
 	for i in final_answer:
-		print np.histogram(i,bins=range(256))[0]
+	    print i.shape
 	for i in range(4):
 		plt.subplot(2,2,i+1)
+		
 		plt.imshow(final_answer[i],cmap='gray')
 	plt.show()
-	cv2.imshow("saliency map",final_answer[4])
-	cv2.waitKey(0)
+	#cv2.imshow("saliency map",final_answer[0])
+	#cv2.waitKey(0)
 	#print final_answer.flatten()
 	#print final_answer.shape
 

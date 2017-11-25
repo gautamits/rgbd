@@ -11,8 +11,8 @@ from matcher import DecisionTreeTrainer
 #path=sys.argv[1]
 
 try:
-	data=np.load("database/data.npy")
-	labels=np.load("database/labels.npy")
+	data=np.load("../database/data.npy")
+	labels=np.load("../database/labels.npy")
 	print "data and labels are found. Do you want to train model directly"
 	ans=raw_input("Y/N ?")
 	if ans=="Y":
@@ -74,10 +74,10 @@ for folders in persons:  #loop over all the persons
 		#data.append(hist(calcgrad(cv2.resize(cv2.imread(image,0),(240,240)))))
 	k+=1
 
-np.save("database/naming",np.array(naming))
-np.save("database/labels",np.array(labels))
-np.save("database/locations",np.array(locations))
-np.save("database/data",np.array(data))
+np.save("../database/naming",np.array(naming))
+np.save("../database/labels",np.array(labels))
+np.save("../database/locations",np.array(locations))
+np.save("../database/data",np.array(data))
 RandomForestTrainer(data,labels)
 svm_trainer(data,labels)
 DecisionTreeTrainer(data,labels)
